@@ -1,0 +1,17 @@
+# ---- Backend Dockerfile (Express + TypeScript) ----
+FROM node:20-slim AS backend-build
+WORKDIR /app/backend
+COPY backend/package*.json ./
+RUN npm ci
+COPY backend/ ./
+RUN npm run build
+
+FROM node:20-slim AS backend
+WORKDIR /app
+COPY --from=backend-build /app/backend/dist ./dist
+COPY --from=backend-build /app/backend/node_modules ./node_modules
+COPY --from=backend-build /app/backend/package.json ./
+COPY backend/data ./data
+EXPOSE 5000
+ENV NODE_ENV=production
+CMD ["node", "dist/server.js"]

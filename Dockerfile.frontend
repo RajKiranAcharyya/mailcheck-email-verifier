@@ -1,0 +1,20 @@
+# ---- Frontend Dockerfile (Next.js) ----
+FROM node:20-slim AS frontend-build
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
+RUN npm ci
+COPY frontend/ ./
+ARG NEXT_PUBLIC_API_URL=http://localhost:5000
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+RUN npm run build
+
+FROM node:20-slim AS frontend
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=frontend-build /app/frontend/.next ./.next
+COPY --from=frontend-build /app/frontend/public ./public
+COPY --from=frontend-build /app/frontend/node_modules ./node_modules
+COPY --from=frontend-build /app/frontend/package.json ./
+COPY --from=frontend-build /app/frontend/next.config.js ./
+EXPOSE 3000
+CMD ["npm", "start"]
