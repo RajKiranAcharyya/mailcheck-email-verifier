@@ -17,12 +17,12 @@ const swaggerOptions: swaggerJsDoc.Options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
-        description: 'Development server',
+        url: '/',
+        description: 'Current environment',
       },
       {
-        url: '/api',
-        description: 'Current environment',
+        url: 'http://localhost:5000',
+        description: 'Development server',
       },
     ],
     components: {

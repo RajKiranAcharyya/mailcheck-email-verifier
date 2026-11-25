@@ -1,6 +1,8 @@
 import React from 'react';
 import { ShieldCheck, ExternalLink, Database, Cpu } from 'lucide-react';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000';
+
 export const Header: React.FC = () => {
   return (
     <header className="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-50">
@@ -26,7 +28,7 @@ export const Header: React.FC = () => {
 
         <div className="flex items-center space-x-3 text-sm">
           <a
-            href="http://localhost:5000/api-docs"
+            href={`${API_BASE}/api-docs`}
             target="_blank"
             rel="noreferrer"
             className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors font-medium text-xs sm:text-sm"

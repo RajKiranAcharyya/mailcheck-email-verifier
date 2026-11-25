@@ -1,5 +1,7 @@
 import express, { Express } from 'express';
 import cors from 'cors';
+import fs from 'fs';
+import path from 'path';
 import verifyRoutes from './routes/verify.routes';
 import jobRoutes from './routes/job.routes';
 import { apiRateLimiter } from './middleware/rateLimiter';
@@ -35,6 +37,22 @@ export function createApp(): Express {
   // API Routes
   app.use('/api/verify', verifyRoutes);
   app.use('/api/jobs', jobRoutes);
+
+  // Serve unified static frontend if bundled (Docker all-in-one mode)
+  const publicCandidates = [
+    path.resolve(__dirname, '../public'),
+    path.resolve(process.cwd(), 'public'),
+  ];
+  const publicDir = publicCandidates.find((dir) => fs.existsSync(path.join(dir, 'index.html')));
+  if (publicDir) {
+    app.use(express.static(publicDir));
+    app.get('*', (req, res, next) => {
+      if (req.path.startsWith('/api') || req.path === '/health') {
+        return next();
+      }
+      return res.sendFile(path.join(publicDir, 'index.html'));
+    });
+  }
 
   // 404 Handler
   app.use((req, res) => {

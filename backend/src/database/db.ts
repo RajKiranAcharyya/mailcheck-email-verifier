@@ -2,6 +2,7 @@ import knex, { Knex } from 'knex';
 import path from 'path';
 
 const environment = process.env.NODE_ENV || 'development';
+const isTypeScript = __filename.endsWith('.ts');
 
 export const knexConfig: Knex.Config = {
   client: 'sqlite3',
@@ -14,7 +15,8 @@ export const knexConfig: Knex.Config = {
   useNullAsDefault: true,
   migrations: {
     directory: path.resolve(__dirname, 'migrations'),
-    extension: 'ts',
+    extension: isTypeScript ? 'ts' : 'js',
+    loadExtensions: [isTypeScript ? '.ts' : '.js'],
   },
   pool: {
     afterCreate: (conn: any, cb: any) => conn.run('PRAGMA foreign_keys = ON', cb),

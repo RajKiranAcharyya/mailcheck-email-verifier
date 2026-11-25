@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/.next
+**/out
+.git
+*.sqlite3
+*.sqlite
+.env
+.env.local
+.env.production
+*.log
+coverage
+list.txt

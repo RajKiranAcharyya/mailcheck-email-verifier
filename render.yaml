@@ -1,11 +1,10 @@
 services:
   - type: web
-    name: mailcheck-backend
-    env: node
+    name: mailcheck-app
+    runtime: docker
     plan: free
-    rootDir: backend
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
