@@ -1,4 +1,7 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000';
+const API_BASE =
+  process.env.NEXT_PUBLIC_STATIC_EXPORT === 'true'
+    ? ''
+    : (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000');
 
 export interface VerificationChecks {
   syntax: { valid: boolean; details?: string };

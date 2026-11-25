@@ -9,7 +9,8 @@ COPY frontend/ ./
 RUN rm -f .env .env.local .env.production
 
 ENV STATIC_EXPORT=true
-ENV NEXT_PUBLIC_API_URL=
+ENV NEXT_PUBLIC_STATIC_EXPORT=true
+ENV NEXT_PUBLIC_API_URL=""
 RUN npm run build
 
 # ---- Stage 2: Build Express + TypeScript Backend ----
