@@ -3,20 +3,17 @@ services:
     name: mailcheck-backend
     env: node
     plan: free
-    buildCommand: npm --prefix backend install && npm --prefix backend run build
-    startCommand: npm --prefix backend start
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
       - key: DATABASE_FILE
-        value: /var/data/prod.sqlite3
+        value: ./prod.sqlite3
       - key: CORS_ORIGIN
         value: '*'
       - key: JOB_CONCURRENCY
         value: 5
-    disk:
-      name: mailcheck-data
-      mountPath: /var/data
-      sizeGB: 1
